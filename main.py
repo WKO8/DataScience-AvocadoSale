@@ -1,5 +1,7 @@
 # Import the necessary modules
+from cmath import sqrt
 import csv
+import re
 from tkinter import W
 from traceback import print_tb
 import matplotlib.pyplot as plt
@@ -260,39 +262,193 @@ import pandas as pd
 # Mode
 # ---------
 
-# Save the mode of the averagePrice by each region
+# Getting the most repeated averagePrice in each region
 
-regions = []
-avgPrice = []
-mode = []
+# regions = []
+# avgPrice = []
+# tmpMode = []
+# mode = []
 
-with open("./csv/sorted_avocado.csv", 'r') as file:
-    csvreader = csv.reader(file)
-    for row in csvreader:
-        if row[3] not in regions:
-            regions.append(row[3])
-        if row[0] not in avgPrice:
-            avgPrice.append(row[0])
-            mode.append(0)
-        if row[0] in avgPrice:
-            idx = regions.index(row[3])
-            mode[idx] += 1
+# with open("./csv/sorted_avocado.csv", 'r') as file:
+#     csvreader = csv.reader(file)
+#     for row in csvreader:
+#         if row[3] not in regions:
+#             if len(regions) > 0:
+#                 quantityMode = 0
+#                 for num in tmpMode:
+#                     if num > quantityMode:
+#                         quantityMode = num
 
-# Remove region record of the list
-# regions.remove('region')
+#                 idxMode = tmpMode.index(quantityMode)
+
+#                 mode.append(avgPrice[idxMode])
+#                 avgPrice = []
+#                 tmpMode = []
+
+#             regions.append(row[3])
+#         if row[0] not in avgPrice:
+#             avgPrice.append(row[0])
+#             tmpMode.append(0)
+#         else:
+#             idx = avgPrice.index(row[0])
+#             tmpMode[idx] += 1
+
+# Remove 'END' record of the list
 # regions.remove('END')
 
-print(regions)
-print(avgPrice)
-print(mode)
+# print(len(regions))
+# print(regions)
+# print(mode)
 
 
-# Writting the medians in the medians_avocado.csv file
+# Writting the mode in the mode_avocado.csv file
 # ---------
 
-# with open("./medians_avocado.csv", 'w') as file:
-#     file.write(f"medians, regions\n")
+# with open("./csv/mode_avocado.csv", 'w') as file:
+#     file.write(f"mode, region\n")
 #     for c in range(0, len(regions)):
-#         file.write(f"{medians[c]},{regions[c]}\n")
+#         file.write(f"{mode[c]},{regions[c]}\n")
 
 
+# # ============================================================================
+
+
+# # Plotting a horizontal bar graph (mode x region)
+# # ---------
+
+# # Initialize the lists for X and Y
+# data = pd.read_csv('./csv/mode_avocado.csv')
+  
+# df = pd.DataFrame(data)
+
+
+# font = {'family': 'sans-serif',
+#         'color':  'darkred',
+#         'weight': 'normal',
+#         'size': 8,
+#         }
+  
+# X = list(df.iloc[:, 1])
+# Y = list(df.iloc[:, 0])
+  
+# # Plot the data using bar() method
+# plt.barh(X, Y)
+
+# for index, value in enumerate(Y): 
+#     plt.text(value, index, str(value), fontdict=font)
+
+# plt.title("Mode x Region")
+# plt.ylabel("Region")
+# plt.xlabel("Mode")
+  
+# # Show the plot
+# plt.show()
+
+# ============================================================================
+
+# Standard deviation
+# ---------
+
+# Getting the standard deviation of the averagePrice in each region
+
+# regions = [] # OK
+# avg = [] # OK
+# avgPrice = [] # OK
+# qnt = 338
+# sumData = [] # OK
+# tmpSumData = [] # ~
+# countLines = 0
+# stdDeviation = [] # ~
+
+# Filling the avg list
+# with open("./csv/avg_avocado.csv", 'r') as file:
+#     csvreader = csv.reader(file)
+#     for row in csvreader:
+#         avg.append(row[0])
+
+#     # Remove average record of the list
+#     avg.remove('average')
+
+
+# Filling the avgPrice and regions lists
+# with open("./csv/sorted_avocado.csv", 'r') as file:
+#     csvreader = csv.reader(file)
+#     for row in csvreader:
+#         if row[3] not in regions:
+#             regions.append(row[3])
+#             avgPrice.append(float(row[0]))
+#         else:
+#             avgPrice.append(float(row[0]))
+
+    # Remove 'END' and 0.0 records of the lists
+    # regions.remove('END')
+    # avgPrice.remove(0.0)
+
+
+# Filling the sumData list
+# for c in range(len(avg)):
+#     for k in range(qnt):
+#         power = pow(float(avgPrice[k]) - float(avg[c]), 2)
+#         sumData.append(power)
+
+
+# Filling the stdDeviation list
+# for c in range(len(sumData)):
+#     if countLines == 337:
+#         squareRoot = sqrt(sum(tmpSumData)/qnt-1)
+#         # Remove the letter j at the end of the numbers and leave them with just two digits after the floating point
+#         squareRoot = float(f"{float(str(squareRoot).replace('j', '')):.2f}")
+#         stdDeviation.append(squareRoot)
+#         tmpSumData = []
+#         countLines = 0
+#     tmpSumData.append(sumData[c])
+#     countLines += 1
+
+# print(regions)
+# print(stdDeviation)
+
+
+# Writting the standard deviation in the std_deviation_avocado.csv file
+# ---------
+
+# with open("./csv/std_deviation_avocado.csv", 'w') as file:
+#     file.write(f"stdDeviation,region\n")
+#     for c in range(len(regions)):
+#         file.write(f"{stdDeviation[c]},{regions[c]}\n")
+
+
+# # ============================================================================
+
+
+# # Plotting a horizontal bar graph (standard deviation x region)
+# # ---------
+
+# # Initialize the lists for X and Y
+data = pd.read_csv('./csv/std_deviation_avocado.csv')
+  
+df = pd.DataFrame(data)
+
+
+font = {'family': 'sans-serif',
+        'color':  'darkred',
+        'weight': 'normal',
+        'size': 8,
+        }
+  
+X = list(df.iloc[:, 1])
+Y = list(df.iloc[:, 0])
+  
+# # Plot the data using bar() method
+plt.barh(X, Y)
+
+for index, value in enumerate(Y): 
+    plt.text(value, index, str(value), fontdict=font)
+
+plt.title("Standard Deviation x Region")
+plt.ylabel("Region")
+plt.xlabel("Standard Deviation")
+  
+# # Show the plot
+plt.show()
+
+# ============================================================================
