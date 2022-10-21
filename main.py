@@ -1,9 +1,6 @@
 # Import the necessary modules
 from cmath import sqrt
 import csv
-import re
-from tkinter import W
-from traceback import print_tb
 import matplotlib.pyplot as plt
 import pandas as pd
 
